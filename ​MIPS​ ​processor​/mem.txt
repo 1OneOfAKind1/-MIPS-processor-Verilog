@@ -1,0 +1,43 @@
+	////////////////////////////////////////   Data Memory   ////////////////////////////////////////
+module Data_Memory(Address,Write_Data,MemWrite,MemRead,clk,Read_Data);
+input [31:0]Address;
+input [31:0]Write_Data;
+input MemWrite;
+input MemRead;
+input clk;
+output reg [31:0]Read_Data;
+reg [31:0]DataMemory[0:31];
+initial 
+begin
+$readmemb("D:\datamemory.txt",DataMemory);
+end
+always @(Address or MemWrite or MemRead or Write_Data)
+begin
+if(MemWrite)
+DataMemory[Address] <= Write_Data;
+else if(MemRead)
+Read_Data <= DataMemory[Address];
+end
+
+endmodule
+
+	////////////////////////////////////////   Instruction Memory   ////////////////////////////////////////
+module Instruction_Memory(PC,clk,Read_Instruction);
+input [31:0]PC;
+input clk;
+output reg [31:0]Read_Instruction;
+reg [31:0]InstructionMemory[0:31];
+
+initial
+begin
+$readmemb("D:\memory.txt",InstructionMemory);
+//#1
+//$display("%b",InstructionMemory[10]);
+end
+
+always @(PC)
+begin
+Read_Instruction <= InstructionMemory[PC];
+end
+
+endmodule

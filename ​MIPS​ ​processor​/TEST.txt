@@ -1,0 +1,81 @@
+
+
+module ProgramCounter ( Sign,Result,clk );
+output reg [31:0] Result ;
+input clk;
+input [31:0] Sign ; 
+reg [31:0] PC ;
+initial 
+begin
+PC=0;
+Result =PC;
+end
+always @ (posedge clk)
+begin
+Result=Sign;
+end 
+endmodule 
+
+
+module TEST ();
+wire [31:0] Sign, final_PC,PC_add4,shifted_sign,next_PC,IDIF_PC,IDIF_IR;
+reg clk ;
+wire PCSrc;
+wire [31:0] Result ;
+wire [31:0]Read_Instruction,ReadData1,ReadData2,MuxALU2,ALUresult,Read_Data,Write_data_mux;
+wire [4:0] MuxWrite ;
+wire [1:0]AluOp;
+wire  RegDst,Jump,Branch,MemRead,MemtoReg,MemWrite,ALUSrc,RegWrite,zero_signal  ;
+wire [3:0] acuout;//output alu control
+ProgramCounter  x1(next_PC,Result,clk );
+//
+PC_adder y1(Result,PC_add4);
+//
+Instruction_Memory x2(Result,clk,Read_Instruction);
+//
+//ID_IFReg P1(IDIF_PC,IDIF_IR,clk,PC_add4,Read_Instruction);
+//
+branch_adder y6(PC_add4,shifted_sign,final_PC);
+//
+control_unit x5( Read_Instruction, RegDst,Jump,Branch,MemRead,MemtoReg,AluOp,MemWrite,ALUSrc,RegWrite);
+//
+signExtender x6(Read_Instruction[15:0], Sign);
+//
+shift_2 y7(Sign,shifted_sign);
+//
+MUX_5bits x4(Read_Instruction[15:11],Read_Instruction[20:16],RegDst,MuxWrite);// finding destination
+// 
+RegisterFile1 x3(Read_Instruction[25:21], Read_Instruction[20:16], MuxWrite,Write_data_mux, RegWrite, ReadData1, ReadData2,clk);
+//
+alu_control_unit x7(AluOp,Read_Instruction[5:0], acuout);
+//
+MUX_MEM_REG x8(ALUSrc,Sign,ReadData2,MuxALU2);
+//
+ALU4 x9 (ALUresult,zero_signal,ReadData1,MuxALU2,acuout,Read_Instruction[10:6]);
+//
+and (PCSrc,Branch,zero_signal);
+//
+MUX_MEM_REG y4(PCSrc,final_PC,PC_add4,next_PC);
+//
+Data_Memory x10(ALUresult,ReadData2,MemWrite,MemRead,clk,Read_Data);
+//
+MUX_MEM_REG x11(MemtoReg,Read_Data,ALUresult,Write_data_mux);
+
+//Data_Memory x3(Address,Write_Data,MemWrite,MemRead,Clk,Read_Data);
+//Instruction_Memory x2(Result,clk,Read_Instruction);
+always @ *
+begin
+#5 
+clk<=~clk;
+end
+initial 
+begin
+$monitor ($time ," %b %b %b %b %b ",Result,PC_add4,next_PC,final_PC,PCSrc);
+//$monitor ($time," %b %b %b %b %b %b %b %b %b",ReadData1,MuxALU2,ALUresult,Read_Data,MemWrite,MemRead,MuxALU2,Sign,acuout);
+clk=0;
+
+
+
+
+end
+endmodule

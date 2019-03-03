@@ -1,0 +1,126 @@
+
+module ID_IFReg (output reg [31:0] outputPCPlusFour,
+		 output reg [31:0] outputNewInstruction,
+		 input CLK,
+		 input wire [31:0] inputPCPlusFour,
+		 input wire [31:0] inputNewInstruction);
+always @ (posedge CLK)
+	begin
+	outputPCPlusFour <= inputPCPlusFour;
+	outputNewInstruction <= inputNewInstruction;
+	end
+endmodule 
+
+module ID_EXReg(output reg [31:0] outputPCPlusFour,
+		output reg [31:0] outputNewInstruction,
+		output reg [31:0] outputSignExtendedIntermediateValue,
+		output reg [31:0] outputRFReadData1,
+		output reg [31:0] outputRFReadData2,
+		output reg outputMemtoReg;
+		output reg outputWB,
+		output reg outputALUSrc,
+		output reg [3:0] outputALUOP,
+		output reg outputRegDst,
+		output reg otuputDataMemoryWrite,
+		output reg outputDataMemoryRead,
+		output reg outputBranch,
+		input wire CLK,
+		input wire [31:0] inputPCPlusFour,
+		input wire [31:0] inputNewInstruction,
+		input wire [31:0] inputSignExtendedIntermediateValue,
+		input wire [31:0] inputRFReadData1,
+		input wire [31:0] inputRFReadData2,
+		input reg inputMemtoReg;
+		input wire inputWB,
+		input wire inputALUSrc,
+		input wire [3:0] inputALUOP,
+		input wire inputRegDst,
+		input wire inputDataMemoryWrite,
+		input wire inputDataMemoryRead,
+		input wire inputBranch);
+
+
+always @(posedge CLK)
+	begin 
+	outputPCPlusFour     <= inputPCPlusFour;
+	outputNewInstruction <= inputNewInstruction;
+	outputSignExtendedIntermediateValue <= inputSignExtendedIntermediateValue;
+	outputRFReadData1 <= inputRFReadData1;
+	outputRFReadData2 <= inputRFReadData2;
+	outputMemtoReg <= inputMemtoReg;
+	outputWB     <= inputWB;
+	outputALUSrc <= inputALUSrc;
+	outputALUOP  <= inputALUOP;
+	outputRegDst <= inputRegDst;
+	otuputDataMemoryWrite <= inputDataMemoryWrite;
+	outputDataMemoryRead  <= inputDataMemoryRead;
+	outputBranch <= inputBranch;
+	end
+endmodule
+
+
+
+module EX_MEMReg (output reg [31:0] outputNewPC,
+		  output reg [31:0] outputALUResult,
+		  output reg [4 :0]  outputRFWriteReg,
+		  output reg [31:0] outputDataMemoryWriteData,
+		  output reg outputZeroFlag,
+		  output reg outputWB,
+		  output reg outputDataMemWrite,
+  		  output reg outputDataMemRead,
+		  output reg outputBranch,
+		  input wire CLK,
+		  input wire [31:0] inputNewPC,
+		  input wire [31:0] inputALUResult,
+		  input wire [4 :0]  inputRFWriteReg,
+		  input wire [31:0] inputDataMemoryWriteData,
+		  input wire inputZeroFlag,
+		  input wire inputWB,
+		  input wire inputDataMemWrite,
+  		  input wire inputDataMemRead,
+		  input wire inputBranch		  
+		  ); 
+
+always @(posedge CLK)
+	begin 
+	outputNewPC <= inputNewPC;
+	outputALUResult  <= inputALUResult;
+	outputRFWriteReg <= inputRFWriteReg;
+	outputDataMemoryWriteData <= inputDataMemoryWriteData;
+	outputZeroFlag <= inputZeroFlag;
+	outputWB <= inputWB;
+	outputDataMemWrite <= inputDataMemWrite;
+  	outputDataMemRead  <= inputDataMemRead;
+	outputBranch <= inputBranch;
+	end
+endmodule 
+
+
+
+module MEM_WBReg(output reg [31:0] outputDataMemoryReadData,
+		 output reg [31:0] outputALUResult,
+		 output reg [31:0] outputRFWriteRegister,
+		 output reg outputMemToReg,
+		 output reg outputRFRegWrite,
+		 input wire CLK,
+		 input wire [31:0] inputDataMemoryReadData,
+		 input wire [31:0] inputALUResult,
+		 input wire [31:0] inputRFWriteRegister,
+		 input wire inputMemToReg,
+		 input wire inputRFRegWrite);
+
+always @(posedge CLK)
+	begin 
+	outputDataMemoryReadData <= inputDataMemoryReadData;
+	outputALUResult <= inputALUResult;
+	outputRFWriteRegister <= inputRFWriteRegister;
+	outputMemToReg <= inputMemToReg;
+	outputRFRegWrite <= inputRFRegWrite;
+	
+
+	end
+
+
+
+
+endmodule

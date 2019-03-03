@@ -1,0 +1,22 @@
+module ALU4 (result,zero,in1,in2,op,shift_out);
+output reg [31:0] result ;
+output reg zero;
+input wire [31:0] in1,in2;
+input wire [3:0] op;
+input wire [4:0] shift_out;
+wire [31:0] in2_neg;
+assign in2_neg = -in2;
+/*OPERATIONS*/
+always @*
+begin
+zero <=(in1==in2)? 1 : 0 ;
+case(op)
+4'b0010 :result<=($signed(in1)+$signed(in2));
+4'b0110 : result <=($signed(in1)-$signed(in2));
+4'b0000 : result <=(in1&in2);
+4'b0001 : result <=(in1|in2);
+4'b1111 : result <=(in1<<shift_out);
+4'b0111 : result <=($signed(in1) < $signed(in2));
+endcase
+end
+endmodule

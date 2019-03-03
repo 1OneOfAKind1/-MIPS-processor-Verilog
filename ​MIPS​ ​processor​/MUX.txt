@@ -1,0 +1,51 @@
+module MUX_MEM_REG(MuxMemtoReg,MuxAluResult,MuxMemResult,MuxWriteData);
+input MuxMemtoReg;
+input [31:0] MuxAluResult ,MuxMemResult ;
+output [31:0] MuxWriteData;
+assign MuxWriteData =(MuxMemtoReg)? MuxAluResult:MuxMemResult;
+
+endmodule
+
+module MUX_5bits(rd,rt,MuxRegDes,MuxWrite);
+input MuxRegDes;
+input[4:0] rd,rt;
+output [4:0] MuxWrite ;
+assign MuxWrite =(MuxRegDes)?  rd:rt;
+
+endmodule
+
+// Sign
+module signExtender(extend, extended);
+input [15:0] extend;
+output [31:0] extended;
+assign extended = $signed (extend);
+endmodule
+
+
+
+
+module PC_adder(pcold,pcnew);
+input [31:0]pcold;
+output [31:0]pcnew;
+
+assign pcnew=pcold+1;
+
+endmodule
+
+
+module branch_adder(pc_new,shiftedsign1,finalPC);
+input [31:0]pc_new,shiftedsign1;
+output [31:0]finalPC;
+
+assign finalPC=pc_new+shiftedsign1;
+
+endmodule
+
+
+module shift_2(signbefore,signafter);
+input [31:0]signbefore;
+output [31:0]signafter;
+
+assign signafter = signbefore<<2;
+
+endmodule

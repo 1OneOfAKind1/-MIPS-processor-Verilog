@@ -1,0 +1,28 @@
+
+module alu_control_unit(op_type, fun, out);
+input [1:0] op_type;//output from control unit
+input [5:0] fun; //function 
+output reg [3:0] out; //input of the alu
+always @(op_type)
+begin
+if(op_type== 2'b00)
+        begin out= 4'b0010; end //add lw & sw
+    else if(op_type==   2'b01) 
+begin out= 4'b0110; end //sub lw & sw
+    else //case 10 R-format
+
+begin
+if(fun==6'b000000 )
+        begin out= 4'b0010; end //add
+if(fun==6'b000010)
+        begin out= 4'b0110; end //sub
+if (fun==6'b100100)
+begin out= 4'b0000; end  //and
+  if (fun==6'b100101) 
+begin out= 4'b0001; end //or
+ if(fun==6'b101010) 
+begin out=4'b0111; end //slt
+
+end 
+end 
+endmodule

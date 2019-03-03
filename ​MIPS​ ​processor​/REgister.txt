@@ -1,0 +1,37 @@
+
+module MUX_MEM_REG(MuxMemtoReg,MuxAluResult,MuxMemResult,MuxWriteData);
+input MuxMemtoReg;
+input [31:0] MuxAluResult ,MuxMemResult ;
+output [31:0] MuxWriteData;
+assign MuxWriteData =(MuxMemtoReg)? MuxAluResult:MuxMemResult;
+
+endmodule
+
+
+module RegisterFile1(R_Reg1, R_Reg2, W_Reg, W_Data, Reg_Write, ReadData1, ReadData2,clk);
+input wire [4:0] R_Reg1,R_Reg2 ;// first and second register to be read
+input wire [4:0] W_Reg; // reg to written in 
+input wire [31:0] W_Data; // data to be written 
+input wire Reg_Write;  // control signal that enable writing
+output reg [31:0] ReadData1,ReadData2; // output registers
+reg[31:0] R[31:0]; //array of registers each register is 32 bit 
+input wire clk ;
+initial 
+begin
+R[7]=0;
+R[8]=0;
+end
+always @ *
+begin
+		ReadData1 <= R[R_Reg1];
+                ReadData2 <= R[R_Reg2];
+end
+     always @ (posedge clk)
+	begin
+		if(Reg_Write==1)
+                    begin 
+			
+			R[W_Reg] <= W_Data;
+		    end
+end
+endmodule 
